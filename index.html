@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yatzz Tools</title>
+<link rel="icon" type="image/png" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<!-- Font pengganti sementara untuk "MADE Evolve Sans" (font berbayar/berlisensi personal-use).
+     Kalau kamu punya file font aslinya (woff2/woff/ttf), kirim ke Claude untuk dipasang persis. -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bgMedia" class="bgMedia"></div>
+<div class="bgOverlay"></div>
+
+<!-- ===== Simulasi pemindaian sidik jari ===== -->
+<div class="fingerprintScreen" id="fingerprintScreen">
+  <div class="fingerprintCard">
+    <button class="fingerprintGraphic" id="fingerprintTouch" type="button" aria-label="Tekan dan tahan gambar sidik jari untuk memulai simulasi" onpointerdown="startFingerprintScan(event)" onpointerup="cancelFingerprintScan()" onpointercancel="cancelFingerprintScan()" onkeydown="if((event.key===' '||event.key==='Enter')&&!event.repeat)startFingerprintScan(event)" onkeyup="if(event.key===' '||event.key==='Enter')cancelFingerprintScan()" onblur="cancelFingerprintScan()">
+      <svg viewBox="0 0 120 120">
+        <path d="M60 18c-23 0-40 17-40 40 0 8 2 15 4 22M60 29c-17 0-29 12-29 29 0 13 3 24 8 35M60 40c-11 0-18 8-18 18 0 18 4 31 10 43M60 51c-5 0-8 3-8 8 0 19 3 31 8 43M60 18c23 0 40 17 40 40 0 10-2 20-5 29M60 29c17 0 29 12 29 29 0 16-3 29-8 40M60 40c11 0 18 8 18 18 0 19-4 32-10 45"/>
+      </svg>
+      <span class="fingerprintScanline"></span>
+    </button>
+    <h1>Scanning Jari Anda</h1>
+    <p>Tekan dan tahan gambar sidik jari sampai pemindaian selesai.</p>
+    <p class="fingerprintNotice">Setelah terscan kamu akan langsung dapat mengakses ke halaman tools.</p>
+    <div class="fingerprintProgress" aria-hidden="true"><i id="fingerprintProgress"></i></div>
+    <p id="fingerprintStatus" role="status" aria-live="polite">Siap Untuk memulai</p>
+  </div>
+</div>
+
+<!-- ===== Halaman Loading ===== -->
+<div class="loadwrap" id="loadingPage" style="display:none">
+  <div class="loadmedia" id="loadMedia"></div>
+  <div class="loadover">
+    <div class="logo lg pulse"><img src="https://www.image2url.com/r2/default/images/1793096428415-e2fb0846-53e4-42d9-99d8-61bd3d8cdb45.png" alt="Logo Yatzz Tools"></div>
+    <p id="loadGreet">Menyiapkan tools...</p>
+    <div class="bar"><i id="loadBar"></i></div>
+    <button class="btn g sm" onclick="skipLoading()">Lewatkan</button>
+  </div>
+</div>
+
+<div class="channelNotice" id="channelNotice" role="dialog" aria-modal="true" aria-labelledby="channelNoticeTitle" aria-describedby="channelNoticeDescription" onclick="if(event.target===this)closeChannelNotice()">
+  <section class="channelNoticeCard">
+    <button class="channelNoticeClose" type="button" aria-label="Tutup notifikasi saluran" onclick="closeChannelNotice()">×</button>
+    <div class="channelNoticeBrand">
+      <span class="channelNoticeDot"></span>
+      <span class="channelNoticeMeta">YATZZ TOOLS • UPDATE TERBARU</span>
+    </div>
+    <h2 id="channelNoticeTitle">Gabung Saluran WhatsApp</h2>
+    <p id="channelNoticeDescription">Dapatkan update, informasi fitur, dan tools terbaru langsung dari Saluran WhatsApp Yatzz Tools.</p>
+    <a class="channelNoticeJoin" id="channelNoticeLink" href="#" target="_blank" rel="noopener" onclick="closeChannelNotice()">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 3.5A11.8 11.8 0 0 0 12.1 0C5.5 0 .2 5.3.2 11.9c0 2.1.5 4.1 1.6 5.9L.1 24l6.3-1.6a11.8 11.8 0 0 0 5.7 1.5h.1c6.6 0 11.9-5.3 11.9-11.9 0-3.2-1.2-6.2-3.6-8.5ZM12.1 21.9a10 10 0 0 1-5.1-1.4l-.4-.2-3.8 1 1-3.7-.3-.4a9.9 9.9 0 0 1-1.5-5.3 10.1 10.1 0 1 1 10.1 10Zm5.5-7.5c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.2-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.5-.9-.8-1.5-1.7-1.7-2-.2-.3 0-.4.1-.6.1-.1.3-.3.4-.5.1-.2.2-.3.3-.5.1-.2 0-.4 0-.5 0-.1-.7-1.6-.9-2.1-.2-.5-.5-.4-.7-.4h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.7 1.1 2.9c.1.2 2 3.1 4.8 4.3.7.3 1.2.5 1.6.6.7.2 1.3.2 1.8.1.5-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.2-.3-.3-.6-.4Z"/></svg>
+      Gabung ke Saluran <span aria-hidden="true">↗</span>
+    </a>
+    <small>Saluran resmi Yatzz Tools</small>
+  </section>
+</div>
+
+<!-- ===== Halaman Utama ===== -->
+<div id="mainPage" style="display:none">
+<div class="wrap">
+  <header>
+    <div class="brand"><div class="logo"><img src="https://www.image2url.com/r2/default/images/1793096428415-e2fb0846-53e4-42d9-99d8-61bd3d8cdb45.png" alt="Logo Yatzz Tools"></div>Yatzz Tools</div>
+    <div class="musicPlayer" id="musicPlayer" aria-label="Pemutar musik Yatzz" hidden>
+      <div class="musicEqualizer" id="musicEqualizer" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+      <button type="button" class="musicControl" onclick="changeMusic(-1)" aria-label="Lagu sebelumnya" title="Sebelumnya">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 6l-10 6 10 6z"/></svg>
+      </button>
+      <button type="button" class="musicControl musicPlay" id="musicPlay" onclick="toggleMusic()" aria-label="Putar musik" title="Putar">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 12 7-12 7z"/></svg>
+      </button>
+      <button type="button" class="musicControl" onclick="changeMusic(1)" aria-label="Lagu berikutnya" title="Berikutnya">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 6l10 6-10 6z"/></svg>
+      </button>
+      <audio id="globalAudio" preload="none"></audio>
+      <span class="srOnly" id="musicTrack" aria-live="polite"></span>
+    </div>
+  </header>
+
+  <div id="viewTools" style="display:none">
+  <section class="toolsIntroPanel" aria-label="Informasi perangkat dan sambutan">
+  <div class="banner" id="banner"><div class="t"><h1>Yatzz Tools</h1><p>Semua alat dalam satu tempat</p></div></div>
+
+  <p class="greet" id="greet">Selamat datang di Yatzz Tools!</p>
+
+  <div class="info">
+    <div class="ib"><div class="l"><span data-i="phone"></span>Nama Device</div><b id="dev">-</b></div>
+    <div class="ib"><div class="l"><span data-i="battery"></span>Battery</div><b id="bat">-</b></div>
+    <div class="ib"><div class="l"><span data-i="calendar"></span>Tanggal</div><b id="tgl">-</b></div>
+    <div class="ib"><div class="l"><span data-i="clock"></span>Jam</div><b id="jam">-</b></div>
+  </div>
+  </section>
+
+  <section class="toolsPanel" aria-label="Daftar tools">
+  <h2 class="s">Tools</h2>
+  <label class="toolSearch">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+    <input id="toolSearch" type="search" placeholder="Cari nama tools..." autocomplete="off" oninput="filterTools(this.value)" aria-label="Cari tools">
+  </label>
+  <div class="toolsGridScroller"><div class="grid" id="tools"></div></div>
+  <p class="toolSearchEmpty" id="toolSearchEmpty" style="display:none" role="status">Tools tidak ditemukan.</p>
+  </section>
+  </div>
+
+  <div id="viewInfo" style="display:none">
+    <h2 class="s">Info App</h2>
+    <div class="appInfoCard">
+      <div class="appInfoTitle"><span data-i="info"></span><h3>Tentang Aplikasi</h3></div>
+      <div class="row"><span>Pencipta App</span><b>Yatzz</b></div>
+      <div class="row"><span>Version App</span><b>2.0.0</b></div>
+      <div class="row"><span>Total Tools</span><b id="infoToolCount">-</b></div>
+      <h3 class="appInfoContactTitle">Kontak & Media Sosial</h3>
+      <button class="mbtn" onclick="openMenu('mail')"><span data-i="mail"></span>Contact Email</button>
+      <a class="mbtn wa" id="infoWaChannel" href="#" target="_blank" rel="noopener"><span data-i="whatsapp"></span><span id="infoWaChannelText">Saluran WhatsApp</span></a>
+      <a class="mbtn tt" id="infoTiktok" href="#" target="_blank" rel="noopener"><span data-i="music"></span><span id="infoTiktokText">Follow TikTok</span></a>
+    </div>
+  </div>
+
+  <div id="viewSettings" style="display:none">
+    <h2 class="s">Setting</h2>
+    <section class="settingsCard" aria-labelledby="settingsColorTitle">
+      <h3 id="settingsColorTitle">Warna Tampilan</h3>
+      <p class="settingsDescription">Pilih palet retro yang serasi atau biarkan sistem memilihkan warna secara acak.</p>
+      <div class="settingsPaletteGrid">
+        <button class="settingsPalette" type="button" onclick="applyPalette('paperMint')" aria-label="Pilih palet Paper Mint"><span style="--swatch-a:#f2c879;--swatch-b:#8ac8a0"></span>Paper Mint</button>
+        <button class="settingsPalette" type="button" onclick="applyPalette('lavenderLemon')" aria-label="Pilih palet Lavender Lemon"><span style="--swatch-a:#c7a6df;--swatch-b:#f3dc76"></span>Lavender Lemon</button>
+        <button class="settingsPalette" type="button" onclick="applyPalette('coralSky')" aria-label="Pilih palet Coral Sky"><span style="--swatch-a:#ee9278;--swatch-b:#87c5dc"></span>Coral Sky</button>
+        <button class="settingsPalette" type="button" onclick="applyPalette('oliveBerry')" aria-label="Pilih palet Olive Berry"><span style="--swatch-a:#b6c66e;--swatch-b:#d69ab3"></span>Olive Berry</button>
+      </div>
+      <button class="btn settingsRandom" type="button" onclick="applyRandomPalette()">Acak warna</button>
+    </section>
+
+    <section class="settingsCard" aria-labelledby="settingsBannerTitle">
+      <h3 id="settingsBannerTitle">Banner</h3>
+      <p class="settingsDescription">Masukkan link langsung ke file gambar atau video. Kosongkan untuk memakai banner bawaan script.</p>
+      <label class="settingsLabel" for="settingBannerUrl">URL gambar/video banner</label>
+      <input id="settingBannerUrl" type="url" inputmode="url" placeholder="https://contoh.com/banner.jpg">
+      <button class="btn" type="button" onclick="saveCustomMedia('banner')">Terapkan Banner</button>
+    </section>
+
+    <section class="settingsCard" aria-labelledby="settingsLoadingTitle">
+      <h3 id="settingsLoadingTitle">Halaman Loading</h3>
+      <p class="settingsDescription">Masukkan link langsung ke file gambar atau video. Kosongkan untuk memakai media loading bawaan script.</p>
+      <label class="settingsLabel" for="settingLoadingUrl">URL gambar/video loading</label>
+      <input id="settingLoadingUrl" type="url" inputmode="url" placeholder="https://contoh.com/loading.mp4">
+      <button class="btn" type="button" onclick="saveCustomMedia('loading')">Terapkan Loading</button>
+    </section>
+
+    <p class="settingsStatus" id="settingsStatus" role="status" aria-live="polite"></p>
+    <button class="btn settingsReset" type="button" onclick="resetAppearanceSettings()">Reset ke Setelan Awal</button>
+  </div>
+</div>
+
+<nav class="navbar">
+  <button class="navbtn on" data-nav="tools" onclick="navGo('tools')"><span data-i="grid"></span>Tools</button>
+  <button class="navbtn" data-nav="settings" onclick="navGo('settings')"><span data-i="sliders"></span>Setting</button>
+  <button class="navbtn" data-nav="info" onclick="navGo('info')"><span data-i="info"></span>Info App</button>
+</nav>
+
+<div class="ov" id="ov"><div class="modal" id="modal"></div></div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
