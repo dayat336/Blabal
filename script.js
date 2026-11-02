@@ -1,11 +1,11 @@
 /* ================= PENGATURAN (ISI DI SINI) ================= */
-const BANNER_JPG   = "";  // link gambar banner (.jpg)
+const BANNER_JPG   = "badut yatzz neon.jpg";  // link gambar banner (.jpg)
 const BANNER_VIDEO = "https://videotourl.com/videos/1793088513131-a6017994-e030-4cb2-ac0a-60b0e34e0e58.mp4";  // link video banner (.mp4)
-const LOADING_JPG = "loading-character.jpg";  // gambar loading Yatzz  // link gambar halaman loading (.jpg)
+const LOADING_JPG = "badut yatzz neon.jpg";  // gambar loading Yatzz  // link gambar halaman loading (.jpg)
 const LOADING_VIDEO = "gojo loading screen.mp4";  // memakai gambar loading lokal  // link video halaman loading (.mp4), suara asli video ikut diputar
 const LOADING_MS    = 8000; // lama halaman loading (ms) sebelum otomatis lanjut
-const BACKGROUND_JPG   = "https://imgur.com/a/7JdGIxu";  // link gambar latar seluruh halaman (.jpg)
-const BACKGROUND_VIDEO = "https://imgur.com/a/150GbRL";  // wallpaper dinonaktifkan
+const BACKGROUND_JPG   = "";  // link gambar latar seluruh halaman (.jpg)
+const BACKGROUND_VIDEO = "";  // wallpaper dinonaktifkan
 const APPEARANCE_STORAGE_KEY = "yatzzToolsAppearance";
 const PALETTES = {
   paperMint: {name:"Paper Mint", bg:"#deeedf", paper:"#e9f4e9", card:"#f8fff6", card2:"#cde3cf", grid:"#83a58a", p:"#f2c879", p2:"#8ac8a0", neon:"#86bfd2", accent:"#d8a4c4", mint:"#8ac8a0", olive:"#e6d887"},
@@ -35,8 +35,8 @@ const TIKTOK_URL  = "https://www.tiktok.com/@tsumagi.san?_r=1&_t=ZS-9B35KXqYJTm"
 
 // Nama APIKEY — isi sendiri nilainya
 const APIKEY = {
-  TIKTOK:    "",
-  INSTAGRAM: "",
+  TIKTOK:    "https://api.nexray.eu.cc/downloader/tiktok?url=",
+  INSTAGRAM: "https://api.nexray.eu.cc/downloader/v1/instagram?url=",
   PINTEREST: "",
   SPOTIFY:   "",
   FACEBOOK:  "",
