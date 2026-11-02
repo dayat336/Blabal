@@ -2,7 +2,7 @@
 const BANNER_JPG   = "";  // link gambar banner (.jpg)
 const BANNER_VIDEO = "https://videotourl.com/videos/1793088513131-a6017994-e030-4cb2-ac0a-60b0e34e0e58.mp4";  // link video banner (.mp4)
 const LOADING_JPG = "loading-character.jpg";  // gambar loading Yatzz  // link gambar halaman loading (.jpg)
-const LOADING_VIDEO = "";  // memakai gambar loading lokal  // link video halaman loading (.mp4), suara asli video ikut diputar
+const LOADING_VIDEO = "gojo loading screen.mp4";  // memakai gambar loading lokal  // link video halaman loading (.mp4), suara asli video ikut diputar
 const LOADING_MS    = 8000; // lama halaman loading (ms) sebelum otomatis lanjut
 const BACKGROUND_JPG   = "https://imgur.com/a/7JdGIxu";  // link gambar latar seluruh halaman (.jpg)
 const BACKGROUND_VIDEO = "https://imgur.com/a/150GbRL";  // wallpaper dinonaktifkan
